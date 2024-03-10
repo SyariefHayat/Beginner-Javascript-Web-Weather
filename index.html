@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Link Remix Icon -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <!-- Link Font Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Link Css Eksternal -->
+    <link rel="stylesheet" href="styles/style.css" />
+    <title>Weather Web</title>
+  </head>
+  <body>
+    <div class="content">
+      <div class="container1">
+        <div class="greeting">
+          <div class="message"></div>
+          <div class="location">
+            <i class="ri-map-pin-2-fill"></i>
+            <p>Gresik, Jawa Timur Indonesia</p>
+          </div>
+        </div>
+        <div class="time"></div>
+        <div class="currentDate"></div>
+        <div class="box-icon">
+          <div class="box-descrip">
+            <p>Ramalan Cuaca</p>
+            <div class="box-icon-text"></div>
+          </div>
+          <img class="box-icon-value" src="" alt="" />
+        </div>
+      </div>
+      <div class="container2">
+        <canvas id="chart"></canvas>
+      </div>
+    </div>
+    <div class="sidebar">
+      <form action="">
+        <label for="search">
+          <i class="ri-search-line" onclick="searchCity()"></i>
+        </label>
+        <input
+          id="search"
+          type="text"
+          name="search"
+          placeholder="Search by city"
+        />
+      </form>
+      <div class="currentcondition">
+        <div class="temp">
+          <div class="temp-value"></div>
+        </div>
+        <div class="wind">
+          <div class="wind-text">
+            <i class="ri-windy-line" title="Kecepatan Angin"></i>
+            <p>Angin</p>
+          </div>
+          <div class="line">|</div>
+          <div class="wind-value">40.9 km</div>
+        </div>
+        <div class="dewpoint">
+          <div class="dewpoint-text">
+            <i class="ri-water-percent-fill" title="Titik Embun"></i>
+            <p>Embun</p>
+          </div>
+          <div class="line">|</div>
+          <div class="dewpoint-value">20%</div>
+        </div>
+      </div>
+      <div class="weatherforecast">
+        <p>Ramalan Cuaca Harian</p>
+        <div class="box-forecast">
+          <div class="forecast-descrip">
+            <div class="date"></div>
+            <div class="text"></div>
+          </div>
+          <div class="forecast-temp">
+            <div class="temp-min">
+              <div class="min-text">Min</div>
+              <div class="min-value"></div>
+            </div>
+            <div class="temp-max">
+              <div class="max-text">Max</div>
+              <div class="max-value"></div>
+            </div>
+          </div>
+        </div>
+        <div class="box-forecast">
+          <div class="forecast-descrip">
+            <div class="date"></div>
+            <div class="text"></div>
+          </div>
+          <div class="forecast-temp">
+            <div class="temp-min">
+              <div class="min-text">Min</div>
+              <div class="min-value"></div>
+            </div>
+            <div class="temp-max">
+              <div class="max-text">Max</div>
+              <div class="max-value"></div>
+            </div>
+          </div>
+        </div>
+        <div class="box-forecast">
+          <div class="forecast-descrip">
+            <div class="date"></div>
+            <div class="text"></div>
+          </div>
+          <div class="forecast-temp">
+            <div class="temp-min">
+              <div class="min-text">Min</div>
+              <div class="min-value"></div>
+            </div>
+            <div class="temp-max">
+              <div class="max-text">Max</div>
+              <div class="max-value"></div>
+            </div>
+          </div>
+        </div>
+        <div class="box-forecast">
+          <div class="forecast-descrip">
+            <div class="date"></div>
+            <div class="text"></div>
+          </div>
+          <div class="forecast-temp">
+            <div class="temp-min">
+              <div class="min-text">Min</div>
+              <div class="min-value"></div>
+            </div>
+            <div class="temp-max">
+              <div class="max-text">Max</div>
+              <div class="max-value"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script/script.js"></script>
+  </body>
+</html>
