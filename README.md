@@ -1,13 +1,6 @@
-1. Form
-2. Teks Formatting
-3. Array
-4. Object
-5. Consume Api
-6. ForEach
-7. Switch
-8. Method new.date()
-9. Background Image
-10. Object Fit
-11. SetInterval
-12. FlexBox
-13. Chart.js
+Features
+
+1. Ramalan cuaca hari ini
+2. Ramalan cuaca per jam
+3. Ramalan cuaca 4 hari
+4. Pencarian kota
