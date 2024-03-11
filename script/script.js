@@ -1,58 +1,68 @@
+// Variabel awal
+const hoursTotal = 12;
 let globalKey = 203166;
+let hoursData = [];
+let hoursTemp = [];
+let hoursUnit;
 
 function searchCity() {
   const cityName = document.querySelector("#search").value;
 
   if (cityName) {
-    const apiUrl = `http://dataservice.accuweather.com/locations/v1/cities/search?apikey=wyZKXWXdTrhOxaXK6UOMKSqoo0PRSDRV&q=${cityName}&language=id`;
+    const locationUrl = `http://dataservice.accuweather.com/locations/v1/cities/search?apikey=wyZKXWXdTrhOxaXK6UOMKSqoo0PRSDRV&q=${cityName}&language=id`;
 
-    async function getAPI() {
-      const api = await fetch(apiUrl);
+    async function getLocationApi() {
+      const api = await fetch(locationUrl);
       const data = await api.json();
 
-      console.log(data)
-      // Key
+      // Location Key
       globalKey = data[0].Key;
 
-      // Kota 
+      // City
       const city = data[0].EnglishName;
 
-      // Provinsi
-      const localized = data[0].AdministrativeArea.LocalizedName;
+      // Province
+      const province = data[0].AdministrativeArea.LocalizedName;
 
-      // Negara
+      // Country
       const country = data[0].Country.LocalizedName;
 
       // Dom element
       const locationEl = document.querySelector(".location p");
 
-      locationEl.innerHTML = `${city}, ${localized} ${country}`;
+      // Manupulasi Dom
+      locationEl.innerHTML = `${city}, ${province} ${country}`;
 
-      currCondAPI()
-      hourlyAPI()
-      daysAPI()
+      // Jalankan fungsi
+      getCurrCondAPI();
+      gethourlyAPI();
+      getDaysAPI();
 
-      return createChart()
+      // Keluar & jalankan fungsi
+      return createChart();
     }
 
-    getAPI();
+    // Jalankan fungsi
+    getLocationApi();
+
   } else {
-    return;
+    // Keluar & Tampilkan pesan
+    return alert("City not found");
   }
 }
 
 // Current Conditions Weather API
-async function currCondAPI() {
-  const weatherCurrCond = `http://dataservice.accuweather.com/currentconditions/v1/${globalKey}?apikey=wyZKXWXdTrhOxaXK6UOMKSqoo0PRSDRV&language=id&details=true`;
+async function getCurrCondAPI() {
+  const currCondUrl = `http://dataservice.accuweather.com/currentconditions/v1/${globalKey}?apikey=wyZKXWXdTrhOxaXK6UOMKSqoo0PRSDRV&language=id&details=true`;
 
-  const api = await fetch(weatherCurrCond);
+  const api = await fetch(currCondUrl);
   const data = await api.json();
 
   // Dewpoint
   const dewpointValue = data[0].DewPoint.Metric.Value;
   const dewpointUnit = data[0].DewPoint.Metric.Unit;
 
-  // Temp
+  // Temperature
   const tempValue = data[0].Temperature.Metric.Value;
 
   // Icon
@@ -64,59 +74,58 @@ async function currCondAPI() {
   const windUnit = data[0].Wind.Speed.Metric.Unit;
 
   // DOM element
-  const iconTextEl = document.querySelector(".box-icon-text");
   const iconImg = document.querySelector(".box-icon-value");
+  const iconTextEl = document.querySelector(".box-icon-text");
   const tempValueEl = document.querySelector(".temp-value");
   const windValueEl = document.querySelector(".wind-value");
   const dewpointValueEl = document.querySelector(".dewpoint-value");
 
-  // Mengganti atribut src dengaan nilai dari API
+  // Manipulasi Dom
   iconImg.src = `assets/${iconValue}.png`;
   iconImg.alt = iconText;
-
-  // Memasukkan nilai dari API ke dalam element HTML
   iconTextEl.innerHTML = iconText;
   tempValueEl.innerHTML = `${tempValue}<sup>o</sup>`;
   windValueEl.innerHTML = `${windValue} ${windUnit}`;
   dewpointValueEl.innerHTML = `${dewpointValue}<sup>o</sup> ${dewpointUnit}`;
 }
-
-currCondAPI();
-
-// Variabel awal
-const hoursTotal = 12;
-let hoursData = [];
-let hoursTemp = [];
-let hoursUnit;
+// Jalankan Fungsi
+getCurrCondAPI();
 
 // Hourly Forecast API
-async function hourlyAPI() {
-  const hourlyForecast = `http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/${globalKey}?apikey=wyZKXWXdTrhOxaXK6UOMKSqoo0PRSDRV&language=id&details=false&metric=true`;
+async function gethourlyAPI() {
+  const hourlyUrl = `http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/${globalKey}?apikey=wyZKXWXdTrhOxaXK6UOMKSqoo0PRSDRV&language=id&details=false&metric=true`;
 
-  const api = await fetch(hourlyForecast);
+  const api = await fetch(hourlyUrl);
   const data = await api.json();
 
+  // Looping data API dan perbarui nilai variabel
   for (let i = 0; i < hoursTotal; i++) {
+    // Epoch Date
     const hours = data[i].EpochDateTime;
     hoursData.push(changeTime(hours));
 
+    // Temperature Value
     const hoursTempValue = data[i].Temperature.Value;
     hoursTemp.push(hoursTempValue);
   };
 
+  // Temperature Unit
   const hoursTempUnit = data[0].Temperature.Unit;
+
+  // Assignment
   hoursUnit = hoursTempUnit;
 
+  // Keluar
   return createChart();
 }
-
-hourlyAPI();
+// Jalankan fungsi
+gethourlyAPI();
 
 // 5 days weather forecast API
-async function daysAPI() {
-  const fiveDaysForecast = `http://dataservice.accuweather.com/forecasts/v1/daily/5day/${globalKey}?apikey=wyZKXWXdTrhOxaXK6UOMKSqoo0PRSDRV&language=id&details=false&metric=true`;
+async function getDaysAPI() {
+  const fiveDaysUrl = `http://dataservice.accuweather.com/forecasts/v1/daily/5day/${globalKey}?apikey=wyZKXWXdTrhOxaXK6UOMKSqoo0PRSDRV&language=id&details=false&metric=true`;
 
-  const api = await fetch(fiveDaysForecast);
+  const api = await fetch(fiveDaysUrl);
   const data = await api.json();
 
   // Variabel awal
@@ -125,14 +134,17 @@ async function daysAPI() {
   const allTempMin = [];
   const allTempMax = [];
 
-  // Get data from API
+  // Looping data & perbarui nilai variabel
   for (let i = 1; i < data.DailyForecasts.length; i++) {
+    // Epoch Date
     const time = data.DailyForecasts[i].EpochDate;
     allTimes.push(changeDate(time));
 
+    // Icon
     const phrase = data.DailyForecasts[i].Day.IconPhrase;
     allPhrase.push(phrase);
 
+    // Temperature Value
     const tempMin = data.DailyForecasts[i].Temperature.Minimum.Value;
     allTempMin.push(tempMin);
 
@@ -140,6 +152,7 @@ async function daysAPI() {
     allTempMax.push(tempMax);
   }
 
+  // Temperature Unit
   const tempMinUnit = data.DailyForecasts[1].Temperature.Minimum.Unit;
   const tempMaxUnit = data.DailyForecasts[1].Temperature.Maximum.Unit;
 
@@ -149,7 +162,7 @@ async function daysAPI() {
   const mins = document.querySelectorAll(".min-value");
   const maxs = document.querySelectorAll(".max-value");
 
-  // Mengganti nilai dari API ke dalam elemen HTML
+  // Manipulasi Dom
   dates.forEach((date, i) => {
     date.innerHTML = allTimes[i];
   })
@@ -167,8 +180,8 @@ async function daysAPI() {
   })
 
 }
-
-daysAPI();
+// Jalankan fungsi
+getDaysAPI();
 
 // Fungsi untuk mendapat waktu saat ini 
 function getCurrentTime() {
@@ -199,7 +212,6 @@ function changeTime(stamp) {
 // Fungsi untukmerubah unix stamp menjadi tanggal
 function changeDate(stamp) {
   const timestamp = stamp;
-
   const date = new Date(timestamp * 1000);
 
   const options = { weekday: 'long', month: 'long', day: 'numeric' };
@@ -236,10 +248,12 @@ function getCurrentDate() {
 
 // Fungsi untuk memperbarui element html 
 function updateElements() {
+  // Dom element
   const timeEl = document.querySelector(".time");
   const messageEl = document.querySelector(".message");
   const currentDate = document.querySelector(".currentDate");
 
+  // Manipulasi Dom
   timeEl.innerHTML = getCurrentTime();
   messageEl.innerHTML = getGreetingMessage();
   currentDate.innerHTML = getCurrentDate();
@@ -248,7 +262,7 @@ function updateElements() {
 // Jalankan setiap 1 detik
 setInterval(updateElements, 1000);
 
-// Memanggil fungsi updateElements
+// Jalankan fungsi
 updateElements();
 
 // Fungsi untuk membuat grafik menggunakan Chart.js
