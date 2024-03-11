@@ -4,6 +4,7 @@ let globalKey = 203166;
 let hoursData = [];
 let hoursTemp = [];
 let hoursUnit;
+let myChart;
 
 function searchCity() {
   const cityName = document.querySelector("#search").value;
@@ -38,8 +39,9 @@ function searchCity() {
       gethourlyAPI();
       getDaysAPI();
 
+      console.log(hoursData);
       // Keluar & jalankan fungsi
-      return createChart();
+      return myChart.update();
     }
 
     // Jalankan fungsi
@@ -97,6 +99,12 @@ async function gethourlyAPI() {
 
   const api = await fetch(hourlyUrl);
   const data = await api.json();
+
+  if (hoursData.length == 12) {
+    // Perbarui Variabel
+    hoursData = [];
+    hoursTemp = [];
+  }
 
   // Looping data API dan perbarui nilai variabel
   for (let i = 0; i < hoursTotal; i++) {
@@ -269,7 +277,11 @@ updateElements();
 function createChart() {
   const ctx = document.getElementById('chart');
 
-  new Chart(ctx, {
+  if (myChart) {
+    myChart.destroy();
+  }
+
+  myChart = new Chart(ctx, {
     type: 'line',
     data: {
       labels: hoursData,
