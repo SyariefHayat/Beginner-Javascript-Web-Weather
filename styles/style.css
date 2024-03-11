@@ -41,7 +41,7 @@ body {
   height: 55%;
   padding: 20px;
   color: var(--palette-color5);
-  background-image: url(../assets/bg4a.jpg);
+  background-image: url(../assets/bg.jpg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -254,6 +254,14 @@ input[type="text"]:focus {
   -moz-border-radius: 16px;
   -ms-border-radius: 16px;
   -o-border-radius: 16px;
+}
+
+.forecast-descrip {
+  width: 60%;
+}
+
+.text {
+  font-size: 12px;
 }
 
 .forecast-temp {
